@@ -7,7 +7,6 @@ import logging
 from logging.handlers import RotatingFileHandler
 import json
 
-
 con = Console()
 
 # load the environment variables.
@@ -107,7 +106,7 @@ teacher_agent = AIAssistant(api_key=os.getenv('GEMINI_API_KEY'), system_prompt=t
 learner_agent = AIAssistant(api_key=os.getenv('GEMINI_API_KEY'), system_prompt=learner_agent_prompt)
 
 # Create an InteractionManager instance
-interaction_manager = InteractionManager(teacher_agent, learner_agent, 5, 15)
+interaction_manager = InteractionManager(teacher_agent, learner_agent, 5, 5)
 
 # Run the interaction loop
 interaction_manager.run_interaction_loop()

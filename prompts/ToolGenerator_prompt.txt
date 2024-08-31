@@ -1,0 +1,43 @@
+Function declarations
+When you implement function calling in a prompt, you create a tools object, which contains one or more function declarations. You define functions using JSON, specifically with a select subset of the OpenAPI schema format. A single function declaration can include the following parameters:
+
+name (string): The unique identifier for the function within the API call.
+description (string): A comprehensive explanation of the function's purpose and capabilities.
+parameters (object): Defines the input data required by the function.
+type (string): Specifies the overall data type, such as object.
+properties (object): Lists individual parameters, each with:
+type (string): The data type of the parameter, such as string, integer, boolean.
+description (string): A clear explanation of the parameter's purpose and expected format.
+required (array): An array of strings listing the parameter names that are mandatory for the function to operate.
+For code examples of a function declaration using cURL commands, see the Function calling examples. For examples and information on creating function declarations for other platforms, see the Function Calling platforms guide.
+
+Best practices for function declarations
+Accurately defining your functions is essential when integrating them into your requests. Each function relies on specific parameters that guide its behavior and interaction with the model. The following listing provides guidance on defining the parameters of an individual function in a functions_declarations array.
+
+name: Use clear, descriptive names without space, period (.), or dash (-) characters. Instead, use underscore (_) characters or camel case.
+
+description: Provide detailed, clear, and specific in function descriptions, providing examples if necessary. For example, instead of find theaters, use find theaters based on location and optionally movie title that is currently playing in theaters. Avoid overly broad or ambiguous descriptions.
+
+properties > type: Use strongly typed parameters to reduce model hallucinations. For example, if the parameter values are from a finite set, use an enum field instead of listing the values in the description (e.g., "type": "enum", "values": ["now_playing", "upcoming"]). If the parameter value is always an integer, set the type to integer rather than number.
+
+properties > description: Provide concrete examples and constraints. For example, instead of the location to search, use The city and state, e.g. San Francisco, CA or a zip code e.g. 95616.
+
+Example of a Declation and expexted output:
+{
+    "name": "find_movies",
+    "description": "Find movie titles currently playing in theaters based on any description, genre, title words, etc.",
+    "parameters": {
+        "type": "OBJECT",
+        "properties": {
+            "location": {
+                "type": "STRING",
+                "description": "The city and state, e.g. San Francisco, CA or a zip code e.g. 95616"
+            },
+            "description": {
+                "type": "STRING",
+                "description": "Any kind of description including category or genre, title words, attributes, etc."
+            }
+        },
+        "required": ["description"]
+    }
+}
